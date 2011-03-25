@@ -1,5 +1,7 @@
 ;(function($){	
-	
+	/*
+	*	Nathan Stilwell rules!!!
+	*/	
 	$.fn.stumblr = function( options ) {		
 		var elem = $(this);
 		var config = { dataType: 'jsonp' };
