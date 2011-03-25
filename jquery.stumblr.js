@@ -1,20 +1,14 @@
-;(function($){
-	var $host = null;
+;(function($){	
 	
-	$.fn.stumblr = function( url ) {
-		$host = $(this);
-		$.publish( "/stumblr/request", [ url ] );
+	$.fn.stumblr = function( options ) {		
+		var elem = $(this);
+		var config = { dataType: 'jsonp' };
+		var a = $.ajax( options.url, config );
+		
+		a.success( function(data){
+			var content = $( options.template ).tmpl( data );
+			elem.append( content );
+		});
 	};
 	
-	// Request the feed from the Tumblr API
-	$.subscribe( "/stumblr/request", function( url ){
-		// Make the AJAX request here using the url param.
-		// Publish the render event with the returned data.
-	});
-	
-	// Render the specified template for the content
-	$.subscribe( "/stumblr/render", function( data ){
-		// Render the template into the host element using
-		// 		the data param.
-	});
 })(jQuery);
