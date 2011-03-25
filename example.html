@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Stumblr Example Page</title>
+
+		<!-- include the dependencies -->
+		<script src="lib/jquery.js"></script>
+		<script src="lib/jquery.tmpl.js"></script>
+		<script src="lib/bjp/pubsub.js"></script>
+		
+		<script id="stumblr-posts-tmpl" type="text/x-jquery-tmpl">
+			<ul id="posts">
+				{{each posts}}
+					{{if this['type'] === 'link'}}
+					<li class="post"><a href="${this['link-url']}">${this['link-text']}</a></li>
+					{{/if}}
+				{{/each}}
+			</ul>
+		</script>
+		
+		<script src="jquery.stumblr.js"></script>
+	</head>
+	<body>
+		<h2>Upright Netizen</h2>
+		<div class="urn-links"></div>
+		
+		<script>
+			$(document).ready( function(){
+				$(".urn-links").stumblr({
+					url: "http://uprightnetizen.tumblr.com/api/read/json",
+					template: "#stumblr-posts-tmpl"
+				});
+			});
+			
+		</script>
+		
+	</body>
+</html>
