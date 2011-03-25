@@ -9,6 +9,8 @@
 			var content = $( options.template ).tmpl( data );
 			elem.append( content );
 		});
+		
+		return a;
 	};
 	
 })(jQuery);
