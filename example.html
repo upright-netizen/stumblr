@@ -26,9 +26,13 @@
 		
 		<script>
 			$(document).ready( function(){
-				$(".urn-links").stumblr({
+				var jqhxr = $(".urn-links").stumblr({
 					url: "http://uprightnetizen.tumblr.com/api/read/json",
 					template: "#stumblr-posts-tmpl"
+				});
+				
+				jqhxr.success( function(data){
+					console.log( data );
 				});
 			});
 			
