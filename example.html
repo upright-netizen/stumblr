@@ -86,15 +86,14 @@
 	<body>
 		<h1>Upright Netizen</h1>
 		
-		<div class="urn-links"></div>
+		<div class="urn-links" data-url="http://uprightnetizen.tumblr.com"></div>
 		
 		<script>
 			(function($, window, document, undefined){
 				$(function(){
-					$(".urn-links").stumblr({
-						url: "http://uprightnetizen.tumblr.com",
-						template: "#stumblr-posts-tmpl"
-					}).css("font-size", "1.65em"); //test for chaining
+		
+					$(".urn-links").stumblr();
+					
 				});
 			})(jQuery, window, document);
 		</script>

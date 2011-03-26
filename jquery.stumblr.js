@@ -7,13 +7,24 @@
 		
 		return this.each(function(){
 			var elem = $(this),
-				config = { dataType: 'jsonp' }, //this sucks, make it better
-				a = $.ajax( options.url + '/api/read/json', config );
+				o = $.extend({}, opts, elem.data()),
+				a = $.ajax( o.url + '/api/read/json', o['ajax-data'] );
 				
+			
 			a.success( function(data){
-				var content = $( options.template ).tmpl( data );
+				var content = $( o.template ).tmpl( data );
 				elem.append( content );
 			});
 		});
-	};	
+	};
+	
+	//
+	//plugin defaults
+	//
+	$.fn.stumblr.defaults = {
+		url : "http://nathanstilwell.tumblr.com",
+		template : "#stumblr-posts-tmpl",
+		"ajax-data" : { dataType : 'jsonp' }
+	};
+	
 })(jQuery, window, document);
