@@ -8,13 +8,12 @@
 		return this.each(function(){
 			var elem = $(this),
 				config = { dataType: 'jsonp' }, //this sucks, make it better
-				a = $.ajax( options.url, config );
+				a = $.ajax( options.url + '/api/read/json', config );
 				
 			a.success( function(data){
 				var content = $( options.template ).tmpl( data );
 				elem.append( content );
 			});
 		});
-	};
-	
+	};	
 })(jQuery, window, document);
