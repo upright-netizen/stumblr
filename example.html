@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Stumblr Example Page</title>
+		<style>
+			html, body { 
+				padding: 0; 
+				margin: 0; 
+				background-color: #eee;
+				font-family: futura;
+				font-size: 18px;
+				text-align: center;
+			}
+			
+			h1 {
+				font-weight: bold;
+				font-size: 64px;
+				letter-spacing: 12px;
+				text-transform: uppercase
+			}
+			
+			#posts { 
+				padding: 0;
+				margin: 0;
+				display: inline-block;
+				width: 450px;
+				padding-bottom: 35px
+			}
+			
+			#posts li { 
+				list-style: none;
+				text-align: left;
+				background-color: #fff;
+				padding: 12px 0 12px 12px;
+				margin: 18px 0 0 0;				
+				
+				-webkit-box-shadow: 5px 5px 0 #ccc;
+				-moz-box-shadow: 5px 5px 0 #ccc;
+				-o-box-shadow: 5px 5px 0 #ccc;
+				box-shadow: 5px 5px 0 #ccc;
+				
+				-webkit-transition: all .3s ease-in-out;
+				-moz-transition: all .3s ease-in-out;
+				-o-transition: all .3s ease-in-out;
+				transition: all .3s ease-in-out;
+			}
+			
+			#posts li:focus,
+			#posts li:hover {
+				-webkit-box-shadow: 5px 5px 0 #777;
+				-moz-box-shadow: 5px 5px 0 #777;
+				-o-box-shadow: 5px 5px 0 #777;
+				box-shadow: 5px 5px 0 #777;
+			}
+		</style>
+		
+		<!-- include the dependencies -->
+		<script src="http://code.jquery.com/jquery-1.5.1.js"></script>
+		<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js"></script>
+		
+		<script id="stumblr-posts-tmpl" type="text/x-jquery-tmpl">
+			<ul id="posts">
+				{{each posts}}
+					{{if this['type'] === 'link'}}
+						<li class="link post"><a href="${this['link-url']}">${this['link-text']}</a></li>
+					{{/if}}
+					
+					{{if this['type'] === 'video'}}
+						<li class="video post">{{html this['video-source'] }}</li>
+					{{/if}}
+					
+					{{if this['type'] === 'quote'}}
+						<li class="quote post">
+							<p class="text">{{html this['quote-text']}}</p>
+							<p class="source">{{html this['quote-source']}}</p>
+						</li>
+					{{/if}}
+				{{/each}}
+			</ul>
+		</script>
+		
+		<script src="jquery.stumblr.js"></script>
+	</head>
+	<body>
+		<h1>Upright Netizen</h1>
+		
+		<div class="urn-links"></div>
+		
+		<script>
+			$(document).ready( function(){
+				var jqhxr = $(".urn-links").stumblr({
+					url: "http://uprightnetizen.tumblr.com/api/read/json",
+					template: "#stumblr-posts-tmpl"
+				});
+				
+				jqhxr.success( function(data){
+					console.log( data );
+				});
+			});
+			
+		</script>
+		
+	</body>
+</html>
