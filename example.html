@@ -25,17 +25,14 @@
 		<div class="urn-links"></div>
 		
 		<script>
-			$(document).ready( function(){
-				var jqhxr = $(".urn-links").stumblr({
-					url: "http://uprightnetizen.tumblr.com/api/read/json",
-					template: "#stumblr-posts-tmpl"
+			(function($, window, document, undefined){
+				$(function(){
+					$(".urn-links").stumblr({
+						url: "http://uprightnetizen.tumblr.com/api/read/json",
+						template: "#stumblr-posts-tmpl"
+					});		
 				});
-				
-				jqhxr.success( function(data){
-					console.log( data );
-				});
-			});
-			
+			})(jQuery, window, document);
 		</script>
 		
 	</body>

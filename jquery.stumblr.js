@@ -1,18 +1,20 @@
-;(function($){	
+;(function($, window, document, undefined){	
 	/*
 	*	Nathan Stilwell rules!!!
-	*/	
-	$.fn.stumblr = function( options ) {		
-		var elem = $(this);
-		var config = { dataType: 'jsonp' };
-		var a = $.ajax( options.url, config );
+	*/
+	$.fn.stumblr = function( options ) {
+		var opts = $.extend({}, $.fn.stumblr.defaults, options);
 		
-		a.success( function(data){
-			var content = $( options.template ).tmpl( data );
-			elem.append( content );
+		return this.each(function(){
+			var elem = $(this),
+				config = { dataType: 'jsonp' }, //this sucks, make it better
+				a = $.ajax( options.url, config );
+				
+			a.success( function(data){
+				var content = $( options.template ).tmpl( data );
+				elem.append( content );
+			});
 		});
-		
-		return a;
 	};
 	
-})(jQuery);
+})(jQuery, window, document);
