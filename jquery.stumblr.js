@@ -9,14 +9,29 @@
 			var elem = $(this),
 				o = $.extend({}, opts, elem.data()),
 				a = $.ajax( o.url + '/api/read/json', o['ajax-data'] );
-				
+			
+			if( o.templateType === undefined || o.templateType === 'tmpl' ){
+				o.templateEngine = $.tmpl;
+			}
 			
 			a.success( function(data){
-				var content = $( o.template ).tmpl( data );
-				elem.append( content );
+				//var content = $( o.template ).tmpl( data );
+				//elem.append( content );
+				o.templateEngine($(o.template), data).appendTo(elem);
 			});
 		});
 	};
+	//
+	//	Private functions
+	//
+	function debug(output, method){
+		if(window.console && window.console.debug){
+			(method) ?
+				console[method]( output )
+			:
+				console.log( output )
+		}
+	}
 	
 	//
 	//plugin defaults
