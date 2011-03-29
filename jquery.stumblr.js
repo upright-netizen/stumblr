@@ -14,19 +14,19 @@
 					options : o,
 					ajax : a,
 					keepGoing : true,
-					refreshRate : o.refreshRate,
-					refresh : function(data){
-						
-						this.ajax.success(function(data){
-							//this.o.templateEngine($(this.o.template), data).appendTo(this.elem);
-							console.log('ping');
-						});
-						
-						if(this.keepGoing){
-							setTimeout(this.refresh, this.options.refreshRate);
-						}
-					}
+					refreshRate : o.refreshRate
 				};
+				
+				stumblr.refresh = $.proxy(function(data){
+					this.ajax.success(function(data){
+						//this.o.templateEngine($(this.o.template), data).appendTo(this.elem);
+						console.log('ping');
+					});
+					
+					if(this.keepGoing){
+						setTimeout(this.refresh, this.options.refreshRate);
+					}
+				}, stumblr);
 			
 			elem.data("stumblr", stumblr);
 			
