@@ -1,7 +1,5 @@
 ;(function($, window, document, undefined){	
-	/*
-	*	Nathan Stilwell rules!!!
-	*/
+	
 	$.fn.stumblr = function( options ) {
 		var opts = $.extend({}, $.fn.stumblr.defaults, options);
 		
