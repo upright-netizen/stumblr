@@ -1,19 +1,14 @@
-// Mock the Ajax requests
-var recordedAjaxUrl = "";
-var recordedAjaxOptions = {};
-
-jQuery.ajax = function( url, options ) {
-	recordedAjaxUrl = url;
-	recordedAjaxOptions = options;
-	
-	return {
-		success: function( callback ){ /* blank */ },
-		error: function( callback ){ /* blank */ }
+/* Mock the jQuery Ajax behavior */
+QUnit.begin = function(){
+	jQuery.ajax = function( url, options, undefined ){
+		return {
+			success: function(){ /* ... */ },
+			error: function(){ /* ... */ }
+		};
 	};
 };
 
-// Unit Tests
-test('should have default config values', function() { 
+test('Should have default config values', function() { 
 	ok( $.fn.stumblr, 'Plugin does exists.' );
 	ok( $.fn.stumblr.defaults.url, 'Default URL is set' );	
 	ok( $.fn.stumblr.defaults.template, 'Default Template is set' );
@@ -27,46 +22,42 @@ test('should have default config values', function() {
 		'Ajax data type is JSONP by default' );
 });
 
-test('should override default settings by passing an object argument', function(){
-	var expected = "http://nowhere.org/no/place";
-
-	$('#test-area').stumblr({
-		url: expected,
-		'ajax-data': { dataType: 'xml' },
-		refreshRate: 1000
-	});
-
-	var plugin = $('#test-area').data('stumblr');
-	ok( plugin, 'An instance should be attached to the host element.' );
-	equal( 
-		plugin.options.url, 
-		expected, 
-		'The URL should be properly overridden by object argument' );
-		
-	equal(
-		recordedAjaxUrl,
-		expected + '/api/read/json',
-		'The requested URL should be properly formatted.' );
+/* Test overriding the defaults by passing in an object argument */
+test('Should override the defaults using an object argument', function(){
+	var expectedUrl = 'http://test.org/no/place';
+	var expectedTemplate = '#other-tmpl';
+	var expectedDataType = 'xml';
+	var expectedRefreshRate = 1500;
 	
-	equal(
-		plugin.options['ajax-data'].dataType,
-		'xml',
-		'The Ajax data type should be overridden by object argument' );
-		
-	equal(
-		plugin.options.refreshRate,
-		1000,
-		'The refresh rate should be overridden by object argument' );	
+	var o = $('#test-object-argument')
+		.stumblr({ 
+			url: expectedUrl,
+			template: expectedTemplate,
+			"ajax-data": { dataType: expectedDataType },
+			refreshRate: expectedRefreshRate })
+		.data('stumblr');
 	
+	equal( o.options.url, expectedUrl );
+	equal( o.options.template, expectedTemplate );
+	equal( o.options['ajax-data'].dataType, expectedDataType );
+	equal( o.options.refreshRate, expectedRefreshRate );
 });
 
-test('should override default ajax options based on data attributes of host element.', function() {
-	var expected = "http://somewhere.org/some/place";
-	$('#test-area').attr('data-url', expected);
-	$('#test-area').stumblr();
-	equal( 
-		recordedAjaxUrl, 
-		expected + '/api/read/json', 
-		'The URL should be properly overridden by data attributes' );
+/* Test overriding the defaults by setting data attributes */
+test('Should override the defaults using data attributes', function(){
+	var elem = $('#test-data-attributes');
+	var expectedUrl = elem.data('url');
+	var expectedTemplate = elem.data('template');
+	var expectedDataType = elem.data('ajax-data').dataType;
+	var expectedRefreshRate = elem.data('refreshRate');
 	
+	$('#test-area').attr('data-url', expectedUrl);
+	var o = $('#test-data-attributes')
+		.stumblr()
+		.data('stumblr');
+	
+	equal( o.options.url, expectedUrl );
+	equal( o.options.template, expectedTemplate );
+	equal( o.options['ajax-data'].dataType, expectedDataType );
+	equal( o.options.refreshRate, expectedRefreshRate );
 });
