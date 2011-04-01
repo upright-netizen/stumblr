@@ -14,17 +14,19 @@
 					options : o,
 					ajax : a,
 					keepGoing : true,
-					refreshRate : o.refreshRate
+					refreshRate : o.refreshRate,
+					cache : {}
 				};
 				
 				stumblr.refresh = $.proxy(function(data){
 					var s = this;
 					this.ajax.success(function(data){
 						s.elem.empty();
+						s.cache = data;
 						s.options.templateEngine($(s.options.template), data).appendTo(s.elem);
 					});
 					
-					if(this.keepGoing){
+					if(this.options.refresh && this.keepGoing){
 						setTimeout(this.refresh, this.options.refreshRate);
 					}
 				}, stumblr);
@@ -36,11 +38,7 @@
 			}
 			
 			elem.data().stumblr.refresh();
-			//a.success( function(data){
-			//	//var content = $( o.template ).tmpl( data );
-			//	//elem.append( content );
-			//	o.templateEngine($(o.template), data).appendTo(elem);
-			//});
+
 		});
 	};
 	//
@@ -62,6 +60,7 @@
 		url : "http://nathanstilwell.tumblr.com",
 		template : "#stumblr-posts-tmpl",
 		"ajax-data" : { dataType : 'jsonp' },
+		refresh : false,
 		refreshRate : 30000 // 30 seconds
 	};
 	
