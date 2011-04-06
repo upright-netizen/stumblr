@@ -7,24 +7,42 @@
 		
 		return this.each(function(){
 			var elem = $(this),
-				o = $.extend({}, opts, elem.data()), 
-				a = $.ajax( o.url + '/api/read/json', {
-					'dataType' : o['data-type'],
-					data : {
-						'num' : o.number || '',
-						'start' : o.start || '',
-						'type' : o['post-type'] || undefined,
-						'id' : o['just-one'] || undefined
+				o = $.extend({}, opts, elem.data()),
+				
+				// build our ajax data here from our Tumblr options
+				data = (function(){
+					var d = {};
+					
+					if(o.num){
+						d['num'] = o.num;
 					}
-				}),
+					
+					if(o.start){
+						d['start'] = o.start;	
+					}
+					
+					if(o['type']){
+						d['type'] = o['type'];
+					}
+					
+					if(o['id']){
+						d['id'] = o['id'];
+					}
+					
+					return d;
+				})(),
 				
 				stumblr = {
 					elem : elem,
 					options : o,
-					ajax : a
+					ajax : $.ajax({
+						'url' : o.url + '/api/read/json',
+						'dataType' : o['data-type'],
+						data : data
+					})
 				};
 				
-				stumblr.load = $.proxy(function(data){
+				stumblr.load = $.proxy(function(){
 					var s = this;
 					this.ajax.success(function(data){
 						s.options.templateEngine($(s.options.template), data).appendTo(s.elem);
@@ -59,11 +77,7 @@
 	$.fn.stumblr.defaults = {
 		url : "http://nathanstilwell.tumblr.com",
 		template : "#stumblr-posts-tmpl",
-		'data-type' : 'jsonp',
-		'number' : undefined,
-		'start' : undefined,
-		'post-type' : undefined,
-		'just-one' : '3720076960'
+		'data-type' : 'jsonp'
 	};
 	
 })(jQuery, window, document);
